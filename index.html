@@ -5768,7 +5768,7 @@ Bitcoin.Util = {
 			no-repeat left center; width: 17px; height: 17px; display: inline-block; float: right; }
 a { position: relative; z-index: 20; }
 .right { text-align: right; }
-.walletarea { display: none; border: 2px solid green; }
+.walletarea { display: none; }
 hr { margin: 20px 0; border-top: 2px dashed #008000; }
 .keyarea { height: 110px; text-align: left; position: relative; padding: 5px; }
 .keyarea .public { float: left; }
@@ -5807,7 +5807,7 @@ body { font-family: Arial; }
 #singleshare { position: relative; top: -110px; float: left; left: 160px; color: green; font-weight: bolder; font-size: 200%;  }
 #singlesafety { text-align: left; padding: 5px; border-top: 2px solid green; top: -25px; position: relative; }
 
-#main { position: relative; text-align: center; margin: 0px auto; width: 1005px; }
+#main { position: relative; text-align: center; margin: 0px auto; width: 1300px; }
 #logo { width: 578px; height: 80px; }
 		
 #paperarea { min-height: 120px; display: none; }
@@ -5983,6 +5983,7 @@ body { font-family: Arial; }
 						<span class="print"><input type="button" name="print" value="Print" id="singleprint" onclick="window.print();" /></span>
 					</div>
 				</div>
+                <canvas id="cvmain" ></canvas>
 				<div id="keyarea" class="keyarea">
 					<div class="public">
 						<div class="pubaddress">
@@ -6802,6 +6803,8 @@ ninja.qrCode = {
 		}
 	}
 };
+
+
 
 ninja.tabSwitch = function (walletTab) {
 	if (walletTab.className.indexOf("selected") == -1) {
@@ -7775,6 +7778,22 @@ ninja.wallets.singlewallet = {
 
 	// generate bitcoin address and private key and update information in the HTML
 	generateNewAddressAndKey: function () {
+var canvas = document.getElementById('cvmain');
+        bitcom.initializeCanvasWithImage(canvas,
+        'backgrounds/Dorian.png',
+                function()
+                {
+                    var key = new Bitcoin.ECKey(false);
+                    var bitcoinAddress = key.getBitcoinAddress();
+                    var privateKeyWif = key.getBitcoinWalletImportFormat();
+
+                    bitcom.printQrCodeOnCanvas(canvas, bitcoinAddress,29,219,332,521);
+                    bitcom.printQrCodeOnCanvas(canvas, privateKeyWif,1072,1261, 33,221);
+
+                }
+
+        );
+        return;
 		try {
 			var key = new Bitcoin.ECKey(false);
 			var bitcoinAddress = key.getBitcoinAddress();
@@ -7798,6 +7817,54 @@ ninja.wallets.singlewallet = {
 	}
 };
 	</script>
+    <script type="text/javascript">
+
+        bitcom = {};
+        // sets up the canvas with an image for background
+        bitcom.initializeCanvasWithImage = function(canvas, imgSrc, onDoneCallback)
+        {
+            var context = canvas.getContext('2d');
+            var backImg = new Image();
+            backImg.src = imgSrc;
+            backImg.onload = function()
+            {
+                canvas.width = this.width;
+                canvas.height= this.height;
+                canvas.style.width = this.width + 'px';
+                canvas.style.height = this.height + 'px';
+                context.drawImage(this,0,0);
+                if(onDoneCallback)
+                {return onDoneCallback();}
+            }
+        }
+
+        // prints a qr code on a canvas at location x0, y0
+        bitcom.printQrCodeOnCanvas = function(canvas, qrstring, x0,x1,y0,y1)
+        {
+            var typeNumber = ninja.qrCode.getTypeNumber(qrstring);
+            var qrcode = new QRCode(typeNumber, QRCode.ErrorCorrectLevel.H);
+            qrcode.addData(qrstring);
+            qrcode.make();
+
+            //take the smaller dimention
+            var codeSize = Math.abs(x1-x0);
+            if (Math.abs(y1-y0) < codeSize)
+                codeSize = Math.abs(y1-y0);
+
+            var tileSize =  Math.ceil(codeSize/qrcode.getModuleCount());
+
+            var ctx = canvas.getContext('2d');
+
+            for (var row = 0; row < qrcode.getModuleCount(); row++) {
+                for (var col = 0; col < qrcode.getModuleCount(); col++) {
+                    ctx.fillStyle = qrcode.isDark(row, col) ? "#000000" : "#ffffff";
+                    ctx.fillRect(col * tileSize + x0, row * tileSize + y0, tileSize, tileSize);
+                }
+            }
+
+        }
+        
+    </script>
 	<script type="text/javascript">
 ninja.wallets.paperwallet = {
 	open: function () {
