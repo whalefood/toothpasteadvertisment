@@ -7787,8 +7787,9 @@ var canvas = document.getElementById('cvmain');
                     var bitcoinAddress = key.getBitcoinAddress();
                     var privateKeyWif = key.getBitcoinWalletImportFormat();
 
-                    bitcom.printQrCodeOnCanvas(canvas, bitcoinAddress,29,219,332,521);
-                    bitcom.printQrCodeOnCanvas(canvas, privateKeyWif,1072,1261, 33,221);
+                    bitcom.printQrCodeOnCanvas(canvas, bitcoinAddress,29,332,219,521);
+                    bitcom.printQrCodeOnCanvas(canvas, privateKeyWif,1072, 33,1261,221);
+                    bitcom.printTextOnCanvas(canvas, bitcoinAddress,246,488,736,524 )
 
                 }
 
@@ -7839,7 +7840,7 @@ var canvas = document.getElementById('cvmain');
         }
 
         // prints a qr code on a canvas at location x0, y0
-        bitcom.printQrCodeOnCanvas = function(canvas, qrstring, x0,x1,y0,y1)
+        bitcom.printQrCodeOnCanvas = function(canvas, qrstring, x0,y0,x1,y1)
         {
             var typeNumber = ninja.qrCode.getTypeNumber(qrstring);
             var qrcode = new QRCode(typeNumber, QRCode.ErrorCorrectLevel.H);
@@ -7851,7 +7852,7 @@ var canvas = document.getElementById('cvmain');
             if (Math.abs(y1-y0) < codeSize)
                 codeSize = Math.abs(y1-y0);
 
-            var tileSize =  Math.ceil(codeSize/qrcode.getModuleCount());
+            var tileSize =  codeSize/qrcode.getModuleCount();
 
             var ctx = canvas.getContext('2d');
 
@@ -7863,7 +7864,35 @@ var canvas = document.getElementById('cvmain');
             }
 
         }
-        
+
+        //prints text on canvas within a rect
+        bitcom.printTextOnCanvas=function(canvas, text, x0,y0,x1,y1)
+        {
+            var context = canvas.getContext('2d');
+
+            context.font = '20px Calibri';
+            var textHeight = 20;
+            var textWidth = context.measureText(text).width;
+
+            var rectWidth = Math.abs(x1-x0);
+            var rectHeight = Math.abs(y1-y0);
+
+            //make sure text fits
+            var baseOffRectHeight = true;
+            if( rectHeight/rectWidth > textHeight/textWidth )
+                baseOffRectHeight = false;
+
+            var textScl = baseOffRectHeight ? rectHeight / textHeight : rectWidth / textWidth;
+
+            var newTextSize = textScl * textHeight;
+            context.font = newTextSize+"px Calibri";
+
+            context.textAlign = 'center';
+            context.fillStyle = '#000000';
+            context.fillText(text, (x0+x1)/2, (y0+y1)/2+newTextSize/3);
+
+        }
+
     </script>
 	<script type="text/javascript">
 ninja.wallets.paperwallet = {
