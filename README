@@ -1,5 +1,5 @@
 This project is a fork of bitaddress.org to add some custom backgrounds.
-Background image courtesy of reddit user CoinCult (http://www.reddit.com/user/CoinCult)
+Background images courtesy of reddit user CoinCult (http://www.reddit.com/user/CoinCult)
 
 
 Summary of JavaScript functions with a redistributable license:
@@ -12,9 +12,10 @@ window.EllipticCurve		BSD License
 window.BigInteger		BSD License
 window.QRCode			MIT License
 window.Bitcoin			MIT License
+bitaddress.org          MIT License
 
-The bitaddress.org software is available under The MIT License (MIT)
-Copyright (c) 2011-2013 bitaddress.org
+The bitcomPaperWallet software is available under The MIT License (MIT)
+Copyright (c) 2014 bitcomPaperWallet
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this 
 software and associated documentation files (the "Software"), to deal in the Software 
