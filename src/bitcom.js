@@ -1,4 +1,4 @@
-bitcom = (function () {
+var bitcom = (function () {
 
     var public = {};
 
@@ -106,10 +106,14 @@ bitcom = (function () {
         }
     }
 
-    public.generateWallets(outputDiv, backgroundConfig, count)
+    public.generateWallets = function(outputDiv, backgroundConfig, count)
     {
         if (count > 500) {
             alert("Whoa there.  That's a lota wallets.  I don't wanna freeze your computer here. Try something less than 500.")
+        }
+
+        while (outputDiv.firstChild) {
+            outputDiv.removeChild(outputDiv.firstChild);
         }
 
         var canvi = [];

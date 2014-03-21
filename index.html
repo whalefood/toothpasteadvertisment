@@ -1657,7 +1657,9 @@ if (typeof Crypto == "undefined" || !Crypto.util) {
 		}
 		entropyStr += pluginsStr + mimeTypesStr;
 		// cookies and storage: 1 bit
-		entropyStr += navigator.cookieEnabled + typeof (sessionStorage) + typeof (localStorage);
+		// bitcom: disabled for security warning reasons
+		// entropyStr += navigator.cookieEnabled + typeof (sessionStorage) + typeof (localStorage);
+
 		// language: ~7 bit
 		entropyStr += navigator.language;
 		// history: ~2 bit
@@ -5944,6 +5946,7 @@ body { font-family: Arial; }
 @media print
 {
     #main { width: auto; }
+    h1 {display: none;}
     #singlearea { border: 0; }
     #singlesafety { border: 0; }
     #paperarea .keyarea:first-child { border-top: 2px solid green; }
@@ -5982,23 +5985,24 @@ body { font-family: Arial; }
             function regenerateWallets()
             {
                 var outputDiv = document.getElementById('dvOutput');
-                var count = document.getElementById('inpBitcomCount');
+                var count = document.getElementById('inpBitcomCount').value;
                 count = parseInt(count);
-                if(count == NaN) {count=1;}
+                if(!count || count == NaN) {count=1;}
                 var backSelect = document.getElementById('selBitcomBack');
                 var backgroundId = backSelect.options[backSelect.selectedIndex].value;
+
                 return bitcom.generateWallets(outputDiv, bitcom.backgrounds[backgroundId], count);
 
             }
         </script>
         <div id="singlecommands" class="row">
-            <span><input type="button" id="newaddress" value="Generate New Address" onclick="regenerateWallets()" /></span>
-            <span>Background:<select onchange="regenerateWallets()" id="selBitcomBack"><option value="1" selected="selected">Dorian</option><option value="2">JohnHarvardBitcoin</option></select></span>
-            <span>Number of wallets: <input onchange="regenerateWallets()" id="inpBitcomCount" type="text" value="1" /> </span>
+            <span><input type="button" id="newaddress" value="Generate New Addresses" onclick="regenerateWallets()" /></span>
+            <span>Background:<select autocomplete="off" onchange="regenerateWallets()" id="selBitcomBack"><option value="1" selected="selected">Dorian</option><option value="2">JohnHarvardBitcoin</option></select></span>
+            <span>Number of wallets: <input autocomplete="off" onchange="regenerateWallets()" id="inpBitcomCount" type="text" value="1" /> </span>
             <span class="print"><input type="button" name="print" value="Print" id="singleprint" onclick="window.print();" /></span>
         </div>
     </div>
-    <div id="cvOutput"></div>
+    <div id="dvOutput"></div>
     <div id="keyarea" class="keyarea" style="display: none">
         <div class="public" >
             <div class="pubaddress">
@@ -6635,8 +6639,6 @@ ninja.seeder = {
 	// number of mouse movements to wait for
 	seedLimit: (function () {
 		var num = Crypto.util.randomBytes(12)[11];
-        //TODO: remove this after testing
-        return 5;
 		return 200 + Math.floor(num);
 	})(),
 
@@ -7789,28 +7791,12 @@ ninja.wallets.singlewallet = {
 
 	// generate bitcoin address and private key and update information in the HTML
 	generateNewAddressAndKey: function () {
-        var canvas = document.getElementById('cvmain');
-        bitcom.initializeCanvasWithImage(canvas,
-            'backgrounds/Dorian.png',
-            function()
-            {
-                var key = new Bitcoin.ECKey(false);
-                var bitcoinAddress = key.getBitcoinAddress();
-                var privateKeyWif = key.getBitcoinWalletImportFormat();
-
-                bitcom.printQrCodeOnCanvas(canvas, bitcoinAddress,29,332,219,521);
-                bitcom.printQrCodeOnCanvas(canvas, privateKeyWif,1072, 33,1261,221);
-                bitcom.printTextOnCanvas(canvas, bitcoinAddress,246,488,736,524 )
-
-            }
-
-        );
-        return;
+        bitcom.generateWallets(document.getElementById('dvOutput'),bitcom.backgrounds[1],1);
 	}
 };
 	</script>
     <script type="text/javascript">
-        bitcom = (function () {
+        var bitcom = (function () {
 
     var public = {};
 
@@ -7918,10 +7904,14 @@ ninja.wallets.singlewallet = {
         }
     }
 
-    public.generateWallets(outputDiv, backgroundConfig, count)
+    public.generateWallets = function(outputDiv, backgroundConfig, count)
     {
         if (count > 500) {
             alert("Whoa there.  That's a lota wallets.  I don't wanna freeze your computer here. Try something less than 500.")
+        }
+
+        while (outputDiv.firstChild) {
+            outputDiv.removeChild(outputDiv.firstChild);
         }
 
         var canvi = [];
@@ -7948,7 +7938,7 @@ ninja.wallets.singlewallet = {
 })()
     </script>
     <script type="text/javascript">
-        bitcom = bitcom || {};
+        var bitcom = bitcom || {};
 bitcom.backgrounds = [];
 
 (function()

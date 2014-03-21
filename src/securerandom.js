@@ -170,7 +170,9 @@
 		}
 		entropyStr += pluginsStr + mimeTypesStr;
 		// cookies and storage: 1 bit
-		entropyStr += navigator.cookieEnabled + typeof (sessionStorage) + typeof (localStorage);
+		// bitcom: disabled for security warning reasons
+		// entropyStr += navigator.cookieEnabled + typeof (sessionStorage) + typeof (localStorage);
+
 		// language: ~7 bit
 		entropyStr += navigator.language;
 		// history: ~2 bit

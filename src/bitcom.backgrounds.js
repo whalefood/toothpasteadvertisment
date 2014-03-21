@@ -1,4 +1,4 @@
-bitcom = bitcom || {};
+var bitcom = bitcom || {};
 bitcom.backgrounds = [];
 
 (function()
