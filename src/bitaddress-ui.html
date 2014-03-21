@@ -127,14 +127,29 @@
 <div id="wallets">
 <div id="singlearea" class="walletarea">
     <div class="commands">
+        <script type="text/javascript">
+            function regenerateWallets()
+            {
+                var outputDiv = document.getElementById('dvOutput');
+                var count = document.getElementById('inpBitcomCount');
+                count = parseInt(count);
+                if(count == NaN) {count=1;}
+                var backSelect = document.getElementById('selBitcomBack');
+                var backgroundId = backSelect.options[backSelect.selectedIndex].value;
+                return bitcom.generateWallets(outputDiv, bitcom.backgrounds[backgroundId], count);
+
+            }
+        </script>
         <div id="singlecommands" class="row">
-            <span><input type="button" id="newaddress" value="Generate New Address" onclick="ninja.wallets.singlewallet.generateNewAddressAndKey();" /></span>
+            <span><input type="button" id="newaddress" value="Generate New Address" onclick="regenerateWallets()" /></span>
+            <span>Background:<select onchange="regenerateWallets()" id="selBitcomBack"><option value="1" selected="selected">Dorian</option><option value="2">JohnHarvardBitcoin</option></select></span>
+            <span>Number of wallets: <input onchange="regenerateWallets()" id="inpBitcomCount" type="text" value="1" /> </span>
             <span class="print"><input type="button" name="print" value="Print" id="singleprint" onclick="window.print();" /></span>
         </div>
     </div>
-    <canvas id="cvmain" ></canvas>
-    <div id="keyarea" class="keyarea">
-        <div class="public" style="display: none">
+    <div id="cvOutput"></div>
+    <div id="keyarea" class="keyarea" style="display: none">
+        <div class="public" >
             <div class="pubaddress">
                 <span class="label" id="singlelabelbitcoinaddress">Bitcoin Address</span>
             </div>
