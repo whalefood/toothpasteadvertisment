@@ -12,25 +12,22 @@ ninja.wallets.singlewallet = {
 
 	// generate bitcoin address and private key and update information in the HTML
 	generateNewAddressAndKey: function () {
-		try {
-			var key = new Bitcoin.ECKey(false);
-			var bitcoinAddress = key.getBitcoinAddress();
-			var privateKeyWif = key.getBitcoinWalletImportFormat();
-			document.getElementById("btcaddress").innerHTML = bitcoinAddress;
-			document.getElementById("btcprivwif").innerHTML = privateKeyWif;
-			var keyValuePair = {
-				"qrcode_public": bitcoinAddress,
-				"qrcode_private": privateKeyWif
-			};
-			ninja.qrCode.showQrCode(keyValuePair, 4);
-		}
-		catch (e) {
-			// browser does not have sufficient JavaScript support to generate a bitcoin address
-			alert(e);
-			document.getElementById("btcaddress").innerHTML = "error";
-			document.getElementById("btcprivwif").innerHTML = "error";
-			document.getElementById("qrcode_public").innerHTML = "";
-			document.getElementById("qrcode_private").innerHTML = "";
-		}
+        var canvas = document.getElementById('cvmain');
+        bitcom.initializeCanvasWithImage(canvas,
+            'backgrounds/Dorian.png',
+            function()
+            {
+                var key = new Bitcoin.ECKey(false);
+                var bitcoinAddress = key.getBitcoinAddress();
+                var privateKeyWif = key.getBitcoinWalletImportFormat();
+
+                bitcom.printQrCodeOnCanvas(canvas, bitcoinAddress,29,332,219,521);
+                bitcom.printQrCodeOnCanvas(canvas, privateKeyWif,1072, 33,1261,221);
+                bitcom.printTextOnCanvas(canvas, bitcoinAddress,246,488,736,524 )
+
+            }
+
+        );
+        return;
 	}
 };

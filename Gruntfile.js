@@ -37,7 +37,9 @@ module.exports = function (grunt) {
 					{ token: "//ninja.detailwallet.js", file: "./src/ninja.detailwallet.js" },
 					{ token: "//qrcode.js", file: "./src/qrcode.js" },
 					{ token: "//securerandom.js", file: "./src/securerandom.js" },
-					{ token: "//main.css", file: "./src/main.css" }
+                    { token: "//main.css", file: "./src/main.css" },
+                    { token: "//bitcom.js", file: "./src/bitcom.js" },
+                    { token: "//bitcom.backgrounds.js", file: "./src/bitcom.backgrounds.js" }
 				]
 			}
 		}
