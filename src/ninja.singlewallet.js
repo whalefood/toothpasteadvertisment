@@ -12,6 +12,6 @@ ninja.wallets.singlewallet = {
 
 	// generate bitcoin address and private key and update information in the HTML
 	generateNewAddressAndKey: function () {
-        bitcom.generateWallets(document.getElementById('dvOutput'),bitcom.backgrounds[1],1);
+        bitcom.generateWallets(document.getElementById('dvOutput'),bitcom.backgrounds[2],1);
 	}
 };

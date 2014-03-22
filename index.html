@@ -5967,7 +5967,7 @@ body { font-family: Arial; }
 <body onclick="SecureRandom.seedTime();" onmousemove="ninja.seeder.seed(event);">
 <div id="busyblock"></div>
 <div id="main">
-<h1>BitcomPaperWallet</h1>
+<h1>John's tooth paste advertisement (now with more crypto-paste!)</h1>
 <div id="seedpoolarea"><textarea rows="16" cols="62" id="seedpool"></textarea></div>
 <div id="testnet"></div>
 
@@ -5975,7 +5975,7 @@ body { font-family: Arial; }
     <span id="generatelabelbitcoinaddress">Generating Bitcoin Address...</span><br />
     <span id="generatelabelmovemouse">MOVE your mouse around to add some extra randomness... </span><span id="mousemovelimit"></span><br />
     <span id="generatelabelkeypress">OR type some random characters into this textbox</span> <input type="text" id="generatekeyinput" onkeypress="ninja.seeder.seedKeyPress(event);" /><br />
-    <div id="seedpooldisplay" style="background:url('backgrounds/Dorian.png')"></div>
+    <div id="seedpooldisplay" style="background:url('backgrounds/JohnHarvardBitcoin.jpg')"></div>
 </div>
 <div id="menu"></div>
 <div id="wallets">
@@ -5997,7 +5997,7 @@ body { font-family: Arial; }
         </script>
         <div id="singlecommands" class="row">
             <span><input type="button" id="newaddress" value="Generate New Addresses" onclick="regenerateWallets()" /></span>
-            <span>Background:<select autocomplete="off" onchange="regenerateWallets()" id="selBitcomBack"><option value="1" selected="selected">Dorian</option><option value="2">JohnHarvardBitcoin</option></select></span>
+            <span>Background:<select autocomplete="off" onchange="regenerateWallets()" id="selBitcomBack"><option value="1" >Dorian</option><option selected="selected" value="2">JohnHarvardBitcoin</option></select></span>
             <span>Number of wallets: <input autocomplete="off" onchange="regenerateWallets()" id="inpBitcomCount" type="text" value="1" /> </span>
             <span class="print"><input type="button" name="print" value="Print" id="singleprint" onclick="window.print();" /></span>
         </div>
@@ -7791,7 +7791,7 @@ ninja.wallets.singlewallet = {
 
 	// generate bitcoin address and private key and update information in the HTML
 	generateNewAddressAndKey: function () {
-        bitcom.generateWallets(document.getElementById('dvOutput'),bitcom.backgrounds[1],1);
+        bitcom.generateWallets(document.getElementById('dvOutput'),bitcom.backgrounds[2],1);
 	}
 };
 	</script>
